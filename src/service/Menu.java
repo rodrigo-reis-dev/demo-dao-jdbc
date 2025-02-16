@@ -11,7 +11,8 @@ public class Menu {
 		System.out.println("4 Create a Seller");
 		System.out.println("5 Update a Seller");
 		System.out.println("6 Delete a Seller");
-		System.out.println("7 Exit the program");
+		System.out.println("7 Create a Department");
+		System.out.println("8 Exit the program");
 		System.out.print("Choose an option: ");
 	}
 
@@ -21,7 +22,7 @@ public class Menu {
 			try {
 				choice = sc.nextInt();
 				sc.nextLine();
-				if (choice >= 1 && choice <= 7) {
+				if (choice >= 1 && choice <= 8) {
 					break;
 				} else {
 					System.out.println("Invalid choice!");
@@ -30,7 +31,7 @@ public class Menu {
 				}
 			} catch (Exception e) {
 				sc.nextLine();
-				System.out.println("Invalid input! Please enter a number between 1 and 7.");
+				System.out.println("Invalid input! Please enter a number between 1 and 8.");
 				System.out.println();
 				showMenu();
 			}

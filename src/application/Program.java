@@ -3,17 +3,23 @@ package application;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
+import model.dao.DepartmentDao;
 import model.dao.SellerDao;
-import service.SellerService;
+import service.DepartmentService;
 import service.Menu;
+import service.SellerService;
 
 public class Program {
 
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
+		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
+		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+		
 		SellerService sellerService = new SellerService(sellerDao);
+		DepartmentService departmentService = new DepartmentService(departmentDao);
 		
 		while(true) {
 			Menu.showMenu();
@@ -26,7 +32,8 @@ public class Program {
 				case 4: sellerService.createSeller(sc); break;
 				case 5: sellerService.updateSeller(sc); break;
 				case 6: sellerService.deleteSeller(sc); break;
-				case 7: Menu.exitProgram(sc); return;
+				case 7: departmentService.createDepartment(sc); break;
+				case 8: Menu.exitProgram(sc); return;
 				default: System.out.println("Invalid choice!"); break;
 			}
 		}

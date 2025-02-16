@@ -15,7 +15,7 @@ public class DepartmentService {
 	
 	public void createDepartment(Scanner sc) {
 		System.out.println();
-		System.out.println("Enter the name: ");
+		System.out.print("Enter the name for new Department: ");
 		String name = sc.nextLine();
 		Department department = new Department(null, name);
 		departmentDao.insert(department);
