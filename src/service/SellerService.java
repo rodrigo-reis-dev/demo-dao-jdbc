@@ -73,6 +73,7 @@ public class SellerService {
 		System.out.print("Enter the ID of the seller you want to update: ");
 		int id = sc.nextInt();
 		sc.nextLine();
+		
 		Seller seller = sellerDao.findById(id);
 		if (seller == null) {
 			System.out.println("Seller does not exist!");
