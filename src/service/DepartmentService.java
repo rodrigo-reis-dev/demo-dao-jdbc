@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DepartmentDao;
@@ -21,6 +22,14 @@ public class DepartmentService {
 		departmentDao.insert(department);
 		System.out.println("Department created " + department.getName());
 		System.out.println("New department Id " + department.getId());
+	}
+	
+	public void listAllDepartments() {
+		System.out.println();
+		List<Department> list = departmentDao.findAll();
+		for (Department dep : list) {
+			System.out.println(dep);
+		}
 	}
 
 }
