@@ -32,11 +32,13 @@ public class Program {
 				case 4: sellerService.createSeller(sc); break;
 				case 5: sellerService.updateSeller(sc); break;
 				case 6: sellerService.deleteSeller(sc); break;
-				case 7: departmentService.createDepartment(sc); break;
-				case 8: departmentService.listAllDepartments(); break;
-				case 9: departmentService.updateDepartment(sc); break;
-				case 10: departmentService.findDepartmentById(sc); break;
-				case 11: Menu.exitProgram(sc); return;
+				
+				case 7: departmentService.listAllDepartments(); break;
+				case 8: departmentService.findDepartmentById(sc); break;
+				case 9: departmentService.createDepartment(sc); break;
+				case 10: departmentService.updateDepartment(sc); break;
+				case 11: departmentService.deleteDepartment(sc); break;
+				case 12: Menu.exitProgram(sc); return;
 				default: System.out.println("Invalid choice!"); break;
 			}
 		}

@@ -56,18 +56,14 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	@Override
 	public void update(Department obj) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"UPDATE department "
-					+ "SET Name = ?"
-					+ "WHERE ID = ?"
-					);
+			st = conn.prepareStatement("UPDATE department " + "SET Name = ?" + "WHERE ID = ?");
 			st.setString(1, obj.getName());
 			st.setInt(2, obj.getId());
-			
+
 			st.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
@@ -78,7 +74,18 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+
+			st.setInt(1, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
@@ -89,7 +96,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 		try {
 			st = conn.prepareStatement("SELECT * FROM department WHERE ID = ?");
-			
+
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
@@ -115,8 +122,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 		return dep;
 	}
-	
-	
+
 	@Override
 	public List<Department> findAll() {
 		PreparedStatement st = null;
@@ -145,4 +151,66 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	}
 
+	@Override
+	public boolean hasSellers(Integer departmentId) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT COUNT(*) AS count FROM seller WHERE DepartmentId = ?");
+			st.setInt(1, departmentId);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt("count") > 0;
+			}
+			return false;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	@Override
+	public List<Seller> findSellersByDepartment(Integer departmentId) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<Seller> sellers = new ArrayList<>();
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM seller WHERE DepartmentId = ?");
+			st.setInt(1, departmentId);
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				Seller seller = instantiateSeller(rs);
+				sellers.add(seller);
+			}
+			return sellers;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	private Seller instantiateSeller(ResultSet rs) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("Id"));
+		seller.setName(rs.getString("Name"));
+		seller.setEmail(rs.getString("Email"));
+		seller.setBaseSalary(rs.getDouble("BaseSalary"));
+		seller.setBirthDate(rs.getDate("BirthDate"));
+
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		seller.setDepartment(dep);
+
+		return seller;
+	}
 }
